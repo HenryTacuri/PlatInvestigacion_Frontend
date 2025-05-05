@@ -4,14 +4,18 @@
     <h2>Campo de Estudio</h2>
     <mat-form-field class="theme-field">
       <mat-label>Campo de Estudio</mat-label>
-      <input matInput type="text" [(ngModel)]="searchQuery" [disabled]="searchDisabled">
+      <input matInput type="text" [(ngModel)]="searchQuery" [disabled]="searchDisabled" required #search="ngModel">
+      <mat-error *ngIf="search.errors?.['required'] && search.touched">
+        Este campo es requerido.
+      </mat-error>
     </mat-form-field>
 
 
 
     <div class="bt">
       <button mat-raised-button class="buttons" (click)="buscarArticulos()" [disabled]="searchDisabled">Generar</button>
-      <button mat-raised-button (click)="toggleAdvancedOptions()" class="buttons" [disabled]="searchDisabled">Configuraciones</button>
+      <button mat-raised-button (click)="toggleAdvancedOptions()" class="buttons"
+        [disabled]="searchDisabled">Configuraciones</button>
     </div>
 
     <div *ngIf="!isLoggedIn" class="warning">
@@ -54,18 +58,21 @@
     <div *ngIf="documentoDescargado" class="mensaje-descarga">
       <mat-icon color="primary">check_circle</mat-icon>
       <span>¡El documento ha sido descargado exitosamente!</span>
-    </div>    
+    </div>
 
     <div *ngIf="showAdvancedOptions" class="advanced-options">
       <mat-accordion>
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>1. Adquisición de Artículos de Biblioteca Virtual</mat-panel-title>
-            <p mat-icon-button matTooltip="Select libraries for document collection" class="help-icon"><mat-icon>help</mat-icon></p>
+            <p mat-icon-button matTooltip="Select libraries for document collection" class="help-icon">
+              <mat-icon>help</mat-icon></p>
           </mat-expansion-panel-header>
           <h3>Bibliotecas Virtuales</h3>
-          <p><mat-checkbox [(ngModel)]="checkboxes.bibliotecasVirtuales.doaj" [disabled]="searchDisabled">Doaj</mat-checkbox></p>
-          <p><mat-checkbox [(ngModel)]="checkboxes.bibliotecasVirtuales.plos" [disabled]="searchDisabled">Plos</mat-checkbox></p>
+          <p><mat-checkbox [(ngModel)]="checkboxes.bibliotecasVirtuales.doaj"
+              [disabled]="searchDisabled">Doaj</mat-checkbox></p>
+          <p><mat-checkbox [(ngModel)]="checkboxes.bibliotecasVirtuales.plos"
+              [disabled]="searchDisabled">Plos</mat-checkbox></p>
 
           <h3>Repositorio Local</h3>
 
@@ -81,11 +88,11 @@
               <mat-expansion-panel-header>
                 <mat-panel-title>Listar Documentos del repositorio local</mat-panel-title>
               </mat-expansion-panel-header>
-              
+
               <div>
                 <button mat-raised-button color="primary" (click)="cargarDocumentos()">Actualizar Lista</button>
               </div>
-              
+
               <!-- Tabla para mostrar los documentos -->
               <table mat-table [dataSource]="documentos" class="mat-elevation-z8" *ngIf="documentos.length > 0">
                 <ng-container matColumnDef="index">
@@ -106,7 +113,7 @@
                 <li *ngFor="let file of uploadedFiles">{{ file.name }}</li>
               </ul>
             </mat-expansion-panel>
-          
+
 
             <!-- Mensaje cuando no hay documentos -->
             <p *ngIf="documentos.length === 0">Presiona el botón "Listar" para cargar los documentos.</p>
@@ -114,14 +121,15 @@
             <!-- Subir Documentos -->
             <mat-expansion-panel>
               <mat-expansion-panel-header>
-                <mat-panel-title>Subir documentos al repositorio local (Archivos permitidos '.bib', '.pdf')</mat-panel-title>
+                <mat-panel-title>Subir documentos al repositorio local (Archivos permitidos '.bib',
+                  '.pdf')</mat-panel-title>
               </mat-expansion-panel-header>
-              
+
               <div>
                 <input type="file" (change)="onFileSelecteds($event)" multiple />
                 <button mat-raised-button color="primary" (click)="uploadFiles()">Subir</button>
               </div>
-              
+
               <p *ngIf="uploadMessage">{{ uploadMessage }}</p>
 
               <ul>
@@ -135,7 +143,7 @@
               <mat-expansion-panel-header>
                 <mat-panel-title>Eliminar Documentos Repositorio Local</mat-panel-title>
               </mat-expansion-panel-header>
-              
+
               <button mat-raised-button color="warn" (click)="deleteAllFiles()" [disabled]="searchDisabled">
                 Borrar todos los documentos
               </button>
@@ -149,47 +157,130 @@
           </mat-radio-group>
           <h3>Numero de Documentos</h3>
           <mat-form-field>
-            <input matInput type="number" [(ngModel)]="cantidadDocumentos" [disabled]="searchDisabled">
+            <input matInput type="number" [(ngModel)]="cantidadDocumentos"
+              [disabled]="_contenidoBusqueda === 'texto' || searchDisabled" min="1" max="30" required
+              #cantidadDoc="ngModel">
+            <!-- Mensajes de error -->
+            <mat-error *ngIf="cantidadDoc.errors?.['required'] && cantidadDoc.touched">
+              Este campo es requerido.
+            </mat-error>
+            <mat-error *ngIf="cantidadDoc.errors?.['min'] && cantidadDoc.touched">
+              El valor mínimo permitido es 1.
+            </mat-error>
+            <mat-error *ngIf="cantidadDoc.errors?.['max'] && cantidadDoc.touched">
+              El valor máximo permitido es 50.
+            </mat-error>
           </mat-form-field>
 
 
 
         </mat-expansion-panel>
-        
+
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>2. Representaciones del conocimiento (resúmenes, visualizaciones, palabras clave)</mat-panel-title>
+            <mat-panel-title>2. Representaciones del conocimiento</mat-panel-title>
           </mat-expansion-panel-header>
-          <p>Número máximo de temas a generar. (#T)</p>
-          <mat-form-field>
-            <input matInput type="number" [(ngModel)]="numTemas" [disabled]="searchDisabled">
+
+          <!-- Campo 1 -->
+          <p class="mat-mt-2" mat-mt>Número máximo de temas a generar. (#T)</p>
+          <mat-form-field class="mat-mb-2">
+            <input matInput type="number" [(ngModel)]="numTemas" [disabled]="searchDisabled" min="1" max="3" required
+              #numTemasInput="ngModel">
+            <mat-error *ngIf="numTemasInput.errors?.['required'] && numTemasInput.touched">
+              Este campo es requerido.
+            </mat-error>
+            <mat-error *ngIf="numTemasInput.errors?.['min'] && numTemasInput.touched">
+              El valor mínimo permitido es 1.
+            </mat-error>
+            <mat-error *ngIf="numTemasInput.errors?.['max'] && numTemasInput.touched">
+              El valor máximo permitido es 3.
+            </mat-error>
           </mat-form-field>
-          <p>Conjunto de términos comunes con la mayor probabilidad en el tema utilizados para etiquetar ese tema. (k)</p>
-          <mat-form-field>
-            <input matInput type="number" [(ngModel)]="k" [disabled]="searchDisabled">
+
+          <!-- Campo 2 -->
+          <p class="mat-mt-2">Conjunto de términos comunes... (k)</p>
+          <mat-form-field class="mat-mb-2">
+            <input matInput type="number" [(ngModel)]="k" [disabled]="searchDisabled" min="1" max="3" required
+              #kinput="ngModel">
+            <mat-error *ngIf="kinput.errors?.['required'] && kinput.touched">
+              Este campo es requerido.
+            </mat-error>
+            <mat-error *ngIf="kinput.errors?.['min'] && kinput.touched">
+              El valor mínimo permitido es 1.
+            </mat-error>
+            <mat-error *ngIf="kinput.errors?.['max'] && kinput.touched">
+              El valor máximo permitido es 3.
+            </mat-error>
           </mat-form-field>
-          <p>Número máximo de palabras para combinar los términos comunes del tema t en un nuevo nombre de tema. (Wt).</p>
-          <mat-form-field>
-            <input matInput type="number" [(ngModel)]="wt" [disabled]="searchDisabled">
+
+          <!-- Campo 3 -->
+          <p class="mat-mt-2">Número máximo de palabras para combinar términos (Wt)</p>
+          <mat-form-field class="mat-mb-2">
+            <input matInput type="number" [(ngModel)]="wt" [disabled]="searchDisabled" min="1" max="3" required
+              #wtinput="ngModel">
+            <mat-error *ngIf="wtinput.errors?.['required'] && wtinput.touched">
+              Este campo es requerido.
+            </mat-error>
+            <mat-error *ngIf="wtinput.errors?.['min'] && wtinput.touched">
+              El valor mínimo permitido es 1.
+            </mat-error>
+            <mat-error *ngIf="wtinput.errors?.['max'] && wtinput.touched">
+              El valor máximo permitido es 3.
+            </mat-error>
           </mat-form-field>
-          <p>Número máximo de documentos más relevantes para generar el resumen del tema. (N).</p>
-          <mat-form-field>
-            <input matInput type="number" [(ngModel)]="numDocumentos" [disabled]="searchDisabled">
+
+          <!-- Campo 4 -->
+          <p class="mat-mt-2">Número máximo de documentos (N)</p>
+          <mat-form-field class="mat-mb-2">
+            <input matInput type="number" [(ngModel)]="numDocumentos" [disabled]="searchDisabled" min="1" max="3"
+              required #numDocumentosInput="ngModel">
+            <mat-error *ngIf="numDocumentosInput.errors?.['required'] && numDocumentosInput.touched">
+              Este campo es requerido.
+            </mat-error>
+            <mat-error *ngIf="numDocumentosInput.errors?.['min'] && numDocumentosInput.touched">
+              El valor mínimo permitido es 1.
+            </mat-error>
+            <mat-error *ngIf="numDocumentosInput.errors?.['max'] && numDocumentosInput.touched">
+              El valor máximo permitido es 3.
+            </mat-error>
           </mat-form-field>
-          <p>Número máximo de palabras a generar para el tema.. (Wb).</p>
-          <mat-form-field>
-            <input matInput type="number" [(ngModel)]="maxPalabrasPorTema" [disabled]="searchDisabled">
+
+          <!-- Campo 5 -->
+          <p class="mat-mt-2">Número máximo de palabras por tema (Wb)</p>
+          <mat-form-field class="mat-mb-2">
+            <input matInput type="number" [(ngModel)]="maxPalabrasPorTema" [disabled]="searchDisabled" min="1" max="500"
+              required #maxPalabrasPorTemaInput="ngModel">
+            <mat-error *ngIf="maxPalabrasPorTemaInput.errors?.['required'] && maxPalabrasPorTemaInput.touched">
+              Este campo es requerido.
+            </mat-error>
+            <mat-error *ngIf="maxPalabrasPorTemaInput.errors?.['min'] && maxPalabrasPorTemaInput.touched">
+              El valor mínimo permitido es 1.
+            </mat-error>
+            <mat-error *ngIf="maxPalabrasPorTemaInput.errors?.['max'] && maxPalabrasPorTemaInput.touched">
+              El valor máximo permitido es 500.
+            </mat-error>
           </mat-form-field>
-          <p>Número de palabras clave para la representación del conocimiento.. (J).</p>
-          <mat-form-field>
-            <input matInput type="number" [(ngModel)]="numKywords" [disabled]="searchDisabled">
+
+          <!-- Campo 6 -->
+          <p class="mat-mt-2">Número de palabras clave (J)</p>
+          <mat-form-field class="mat-mb-2">
+            <input matInput type="number" [(ngModel)]="numKywords" [disabled]="searchDisabled" min="1" max="5" required
+              #numKywordsInput="ngModel">
+            <mat-error *ngIf="numKywordsInput.errors?.['required'] && numKywordsInput.touched">
+              Este campo es requerido.
+            </mat-error>
+            <mat-error *ngIf="numKywordsInput.errors?.['min'] && numKywordsInput.touched">
+              El valor mínimo permitido es 1.
+            </mat-error>
+            <mat-error *ngIf="numKywordsInput.errors?.['max'] && numKywordsInput.touched">
+              El valor máximo permitido es 5.
+            </mat-error>
           </mat-form-field>
         </mat-expansion-panel>
       </mat-accordion>
     </div>
     <div class="btnew" *ngIf="btnew">
-      <button mat-raised-button (click)="newSearch()" >Nueva búsqueda</button>
+      <button mat-raised-button (click)="newSearch()">Nueva búsqueda</button>
     </div>
   </div>
 </div>
-
