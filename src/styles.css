@@ -30,3 +30,9 @@
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+:root {
+    --primary-color: #063970;
+    --secondary-color: #FBBF01;
+    --hover-color: #0056b3;
+}

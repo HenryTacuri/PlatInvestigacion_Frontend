@@ -45,58 +45,141 @@
   }
 }
 
-.footer {
-  background-color: #003772;
+footer {
+  background-color: var(--primary-color);
   color: white;
-  padding: 20px 0;
+  padding: 40px 20px;
+  margin-top: 40px;
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+}
+
+.footer-section {
+  padding: 15px;
+}
+
+.footer-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: var(--secondary-color);
+  position: relative;
+}
+
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background-color: var(--secondary-color);
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  line-height: 1.8;
+}
+
+.footer-section a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  display: block;
+  padding: 4px 0;
+  transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
   margin-top: 20px;
+}
 
-  .footer-container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    padding: 20px;
-    max-width: 1200px;
-    margin: auto;
-  }
+.social-icon {
+  font-size: 24px;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 50%;
+  text-decoration: none;
+}
 
+/* Colores por defecto */
+.social-icon .fab {
+  color: white;
+  transition: color 0.3s ease;
+}
+
+/* Facebook */
+.social-icon.facebook:hover .fab {
+  color: #1877F2;
+}
+
+/* Instagram */
+.social-icon.instagram:hover .fab {
+  color: #E1306C;
+}
+
+/* X (Twitter) */
+.social-icon.x:hover .fab {
+  color: #000000;
+}
+
+/* YouTube */
+.social-icon.youtube:hover .fab {
+  color: #FF0000;
+}
+
+/* LinkedIn */
+.social-icon.linkedin:hover .fab {
+  color: #0077B5;
+}
+
+/* TikTok */
+.social-icon.tiktok:hover .fab {
+  color: #000000;
+}
+
+/* Efecto de escala */
+.social-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Footer inferior */
+.footer-bottom {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.footer-bottom a {
+  color: var(--secondary-color);
+  margin: 0 8px;
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
   .footer-section {
-    flex: 1;
-    min-width: 200px;
-    margin: 10px;
-
-    h3 {
-      margin-bottom: 10px;
-      font-size: 16px;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-
-      li {
-        margin-bottom: 5px;
-        font-size: 14px;
-      }
-    }
-
-    .social-icons {
-      display: flex;
-      justify-content: space-around;
-      img {
-        width: 30px;
-        height: 30px;
-      }
-    }
+    padding: 10px;
   }
-
-  .footer-logos {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-
-    img {
-      height: 40px;
-    }
+  
+  .footer-section h3 {
+    font-size: 1rem;
   }
 }
