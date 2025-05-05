@@ -93,8 +93,8 @@ export class SearchComponent implements OnInit {
   selectedBibliotecasVirtuales: string[] = [];
 
   // Nuevas propiedades para los desplegables
-  cantidadDocumentos: number = 10;
-  contenidoBusqueda: string = 'texto';
+  cantidadDocumentos: number = 3;
+  _contenidoBusqueda: string = 'texto';
   maxPalabrasPorTema: number = 500;
   numDocumentos: number = 3;
   numTemas: number = 3;
@@ -143,6 +143,18 @@ export class SearchComponent implements OnInit {
 
     // Llamar a la API para listar documentos
     this.cargarDocumentos();
+  }
+
+  get contenidoBusqueda(): string {
+    return this._contenidoBusqueda;
+  }
+  
+  set contenidoBusqueda(value: string) {
+    this._contenidoBusqueda = value;
+    if (value === 'texto') {
+      this.cantidadDocumentos = 3; 
+      console.log(this.cantidadDocumentos);
+    }
   }
 
   uploadFiles() {
