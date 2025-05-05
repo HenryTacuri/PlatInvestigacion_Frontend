@@ -34,5 +34,7 @@ export class AppComponent {
   unloadNotification($event: any): void {
     this.logout();
   }
+
+  currentYear: number = new Date().getFullYear();
     
 }

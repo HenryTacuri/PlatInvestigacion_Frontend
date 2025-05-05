@@ -1,7 +1,4 @@
 import {
-  NG_VALUE_ACCESSOR
-} from "./chunk-XNH2M3SJ.js";
-import {
   UniqueSelectionDispatcher
 } from "./chunk-QEELWXPD.js";
 import {
@@ -11,6 +8,9 @@ import {
   MatRippleModule,
   _MatInternalFormField
 } from "./chunk-NGXKQ5EL.js";
+import {
+  NG_VALUE_ACCESSOR
+} from "./chunk-XNH2M3SJ.js";
 import {
   CommonModule
 } from "./chunk-C7266SUI.js";

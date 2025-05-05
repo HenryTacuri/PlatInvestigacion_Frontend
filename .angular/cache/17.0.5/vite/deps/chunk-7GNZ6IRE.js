@@ -1,7 +1,4 @@
 import {
-  FirebaseApp
-} from "./chunk-6TMFZGDC.js";
-import {
   FIREBASE_APP_NAME,
   FIREBASE_OPTIONS,
   ɵapplyMixins,
@@ -12,6 +9,12 @@ import {
 import {
   firebase
 } from "./chunk-GESHYU5K.js";
+import {
+  isPlatformServer
+} from "./chunk-C7266SUI.js";
+import {
+  FirebaseApp
+} from "./chunk-6TMFZGDC.js";
 import {
   VERSION,
   keepUnstableUntilFirst,
@@ -37,9 +40,6 @@ import {
   registerVersion,
   uuidv4
 } from "./chunk-ASNGFGE3.js";
-import {
-  isPlatformServer
-} from "./chunk-C7266SUI.js";
 import {
   Inject,
   Injectable,
@@ -964,7 +964,7 @@ var AngularFireAuth = class _AngularFireAuth {
   credential;
   constructor(options, name2, platformId, zone, schedulers, useEmulator, settings, tenantId, languageCode, useDeviceLanguage, persistence, _appCheckInstances) {
     const logins = new Subject();
-    const auth = of(void 0).pipe(observeOn(schedulers.outsideAngular), switchMap(() => zone.runOutsideAngular(() => import("./index.esm-3VAMBZF5.js"))), map(() => ɵfirebaseAppFactory(options, zone, name2)), map((app) => ɵauthFactory(app, zone, useEmulator, tenantId, languageCode, useDeviceLanguage, settings, persistence)), shareReplay({
+    const auth = of(void 0).pipe(observeOn(schedulers.outsideAngular), switchMap(() => zone.runOutsideAngular(() => import("./index.esm-56TGR6AC.js"))), map(() => ɵfirebaseAppFactory(options, zone, name2)), map((app) => ɵauthFactory(app, zone, useEmulator, tenantId, languageCode, useDeviceLanguage, settings, persistence)), shareReplay({
       bufferSize: 1,
       refCount: false
     }));
@@ -1249,4 +1249,4 @@ export {
    * limitations under the License.
    *)
 */
-//# sourceMappingURL=chunk-UX6QBWXV.js.map
+//# sourceMappingURL=chunk-7GNZ6IRE.js.map
