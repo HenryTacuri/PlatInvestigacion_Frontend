@@ -1,0 +1,73 @@
+.full-width {
+    width: 100%;
+  }
+  
+  .mat-form-field {
+    background-color: #003772;
+    border-radius: 5px;
+    padding: 0 10px;
+  }
+  
+  .mat-form-field .mat-form-field-flex {
+    background-color: inherit;
+    border-radius: inherit;
+    padding: inherit;
+  }
+  
+  .mat-form-field.mat-focused .mat-form-field-label,
+  .mat-input-element,
+  .mat-form-field-label {
+    color: white !important;
+  }
+  
+  .mat-form-field.mat-focused .mat-form-field-label {
+    color: #FBBF01 !important;
+  }
+  
+  .mat-raised-button {
+    background-color: #003772;
+    color: white;
+  }
+  
+  .mat-raised-button:hover {
+    background-color: #FBBF01;
+    color: #003772;
+  }
+  
+  .mat-raised-button:active {
+    background-color: #FBBF01;
+    color: #003772;
+  }
+  
+  h2 {
+    color: #003772;
+  }
+  
+  .dark-mode h2 {
+    color: white;
+  }
+  
+  .example-form-field {
+    width: 200px;
+  }
+
+  
+::ng-deep .red {
+    --mdc-snackbar-container-color: rgba(139, 0, 0, 0.7); /* Fondo verde transparente */
+    --mdc-snackbar-supporting-text-color: #ffffff; /* Texto blanco */
+    --mat-mdc-snack-bar-button-color: #ffffff; /* Color del botón de acción */
+}
+
+/* En tu archivo styles.scss o styles.css global */
+::ng-deep .green {
+    --mdc-snackbar-container-color: rgba(0, 128, 0, 0.7); /* Fondo verde transparente */
+    --mdc-snackbar-supporting-text-color: #ffffff; /* Texto blanco */
+    --mat-mdc-snack-bar-button-color: #ffffff; /* Color del botón de acción */
+}
+  
+
+.btn-deshabilitado {
+  background-color: gray;
+  color: darkgray;
+  cursor: not-allowed;
+}

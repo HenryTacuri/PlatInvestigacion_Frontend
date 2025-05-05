@@ -1,0 +1,114 @@
+/* Otros estilos de tu proyecto */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra horizontalmente */
+    justify-content: center; /* Centra verticalmente */
+    width: 90%; /* Reduce el ancho para un diseño más limpio */
+    margin: 0 auto; /* Centra todo el contenedor en la página */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera para separación */
+    border-radius: 10px; /* Bordes redondeados */
+    background-color: #f9f9f9; /* Fondo claro */
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+}
+  
+.logo {
+    width: 15%; /* Ajusta el tamaño del logo según tus necesidades */
+    height: auto;
+    margin-bottom: 10px; /* Espacio entre el logo y el siguiente elemento */
+}
+  
+.theme-field {
+    margin-bottom: 10px; /* Espacio entre el input y el siguiente elemento */
+}
+  
+.buttons {
+    width: 100%;
+    margin-inline: 10%;
+}
+  
+.bt {
+    display: flex;
+    flex-direction: row; /* Organiza los botones en columna */
+}
+  
+.advanced-options {
+    padding: 20px; /* Ajusta el padding según sea necesario */
+    margin-top: 20px; /* Espacio entre el header y las opciones avanzadas */
+}
+  
+.spacer {
+    flex: 1 1 auto;
+}
+  
+.estado-item {
+    display: flex;
+    align-items: center;
+}
+  
+.estado-item mat-spinner,
+.estado-item mat-icon {
+    margin-left: 10px;
+}
+  
+.estado {
+    margin-top: 5%;
+    margin-inline-start: 10%;
+}
+
+.help-icon {
+    vertical-align: middle; /* Alinea verticalmente el icono */
+    margin-left: 8px; /* Aleja el icono del texto */
+}
+
+.btnew {
+    display: flex;              /* Usa flexbox para centrar el contenido */
+    justify-content: center;   /* Centra horizontalmente */
+    align-items: center;       /* Centra verticalmente */
+    height: 10vh;             /* Ajusta la altura al 100% de la vista del puerto (viewport) */
+    margin-top: 50px;          /* Ajusta el margen superior para desplazar el botón más abajo */
+  }
+  
+  .btnew button {
+    margin: 0;                 /* Elimina márgenes adicionales si es necesario */
+  }
+
+  .mensaje-descarga {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e8f5e9;
+    border: 1px solid #4caf50;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    color: #2e7d32;
+  }
+
+.rl {
+    margin: 10%;
+}
+
+::ng-deep .red {
+    --mdc-snackbar-container-color: rgba(139, 0, 0, 0.7); /* Fondo verde transparente */
+    --mdc-snackbar-supporting-text-color: #ffffff; /* Texto blanco */
+    --mat-mdc-snack-bar-button-color: #ffffff; /* Color del botón de acción */
+}
+
+/* En tu archivo styles.scss o styles.css global */
+::ng-deep .green {
+    --mdc-snackbar-container-color: rgba(0, 128, 0, 0.7); /* Fondo verde transparente */
+    --mdc-snackbar-supporting-text-color: #ffffff; /* Texto blanco */
+    --mat-mdc-snack-bar-button-color: #ffffff; /* Color del botón de acción */
+  }
+  
+  

@@ -1,0 +1,102 @@
+.menu {
+  .mat-toolbar {
+    background-color: #003772;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 10px; /* Asegura que no haya padding en el toolbar */
+  }
+
+  .logo-container {
+    background-color: white;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    margin-left: 0; /* Elimina el borde izquierdo */
+  }
+
+  .logo {
+    height: 64px; /* Asegura que el logo tenga una altura específica */
+    margin: 0; /* Elimina cualquier margen alrededor del logo */
+    background-color: #003772;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  button {
+    color: white;
+    margin-left: 8px;
+    transition: 0.4s;
+  }
+
+  button:hover {
+    background-color: #FBBF01;
+    color: #003772;
+  }
+
+  button:active,
+  .active-link {
+    background-color: #FBBF01 !important;
+    color: #003772 !important;
+  }
+}
+
+.footer {
+  background-color: #003772;
+  color: white;
+  padding: 20px 0;
+  margin-top: 20px;
+
+  .footer-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .footer-section {
+    flex: 1;
+    min-width: 200px;
+    margin: 10px;
+
+    h3 {
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+
+      li {
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: space-around;
+      img {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
+
+  .footer-logos {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+
+    img {
+      height: 40px;
+    }
+  }
+}

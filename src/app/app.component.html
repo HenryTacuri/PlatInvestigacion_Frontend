@@ -1,0 +1,68 @@
+<div class="menu">
+  <mat-toolbar color="primary">
+    <div class="logo-container">
+      <img src="assets/Logo-UPS-Blanco.png" alt="Logo" class="logo">
+    </div>
+    <span class="spacer"></span>
+    <button mat-button routerLink="/search" routerLinkActive="active-link">Buscar</button>
+    <button mat-button routerLink="/auth" routerLinkActive="active-link" *ngIf="!(isLoggedIn$ | async)">Acceso</button>
+    <button mat-button routerLink="/edit-user" routerLinkActive="active-link" *ngIf="isLoggedIn$ | async">Configuraciones Avanzadas</button>
+    <button mat-button (click)="logout()" *ngIf="isLoggedIn$ | async">Logout</button>
+  </mat-toolbar>
+</div>
+<router-outlet></router-outlet>
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>Institución</h3>
+      <ul>
+        <li>Autoridades</li>
+        <li>Organigrama</li>
+        <li>Planificación</li>
+        <li>Normativa</li>
+        <li>Transparencia</li>
+        <li>Información Financiera</li>
+        <li>Imagen Institucional</li>
+        <li>Participación Ciudadana</li>
+        <li>Archivo Institucional</li>
+        <li>Comprobantes electrónicos</li>
+        <li>Contacto</li>
+        <li>Museo Abya Yala</li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Identidad Salesiana</h3>
+      <ul>
+        <li>Razón de Ser</li>
+        <li>Reseña Histórica</li>
+        <li>San Juan Bosco</li>
+        <li>IUS</li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Prensa</h3>
+      <ul>
+        <li>Eventos</li>
+        <li>Noticias</li>
+        <li>Revistas Informativas</li>
+        <li>Abya Yala - UPS</li>
+        <li>Editorial Abya Yala</li>
+        <li>Colección Documental</li>
+        <li>Redes Sociales Oficiales</li>
+        <li>Feed RSS</li>
+        <li>Informativos Salesianos</li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Síguenos</h3>
+      <div class="social-icons">
+        <img src="assets/iconos/face.jpg" alt="Facebook">
+        <img src="assets/iconos/instagram.jpg" alt="Instagram">
+        <img src="assets/iconos/twiter.png" alt="Twitter">
+        <img src="assets/iconos/youtube.jpg" alt="YouTube">
+        <img src="assets/iconos/in.png" alt="LinkedIn">
+        <img src="assets/iconos/tiktok.png" alt="TikTok">
+      </div>
+    </div>
+  </div>
+</footer>

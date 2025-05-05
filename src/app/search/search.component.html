@@ -1,0 +1,195 @@
+<!-- app.component.html -->
+<div class="container">
+  <div class="header">
+    <h2>Campo de Estudio</h2>
+    <mat-form-field class="theme-field">
+      <mat-label>Campo de Estudio</mat-label>
+      <input matInput type="text" [(ngModel)]="searchQuery" [disabled]="searchDisabled">
+    </mat-form-field>
+
+
+
+    <div class="bt">
+      <button mat-raised-button class="buttons" (click)="buscarArticulos()" [disabled]="searchDisabled">Generar</button>
+      <button mat-raised-button (click)="toggleAdvancedOptions()" class="buttons" [disabled]="searchDisabled">Configuraciones</button>
+    </div>
+
+    <div *ngIf="!isLoggedIn" class="warning">
+      <p>Es necesario iniciar sesión para utilizar la herramienta.</p>
+    </div>
+
+    <div class="estado" *ngIf="estado">
+      <div class="estado-item">
+        <mat-spinner *ngIf="!service1Completed" diameter="20"></mat-spinner>
+        <mat-icon *ngIf="service1Completed">check</mat-icon>
+        <h4>Búsqueda de textos en bibliotecas</h4>
+      </div>
+      <div class="estado-item">
+        <mat-spinner *ngIf="!service2Completed" diameter="20"></mat-spinner>
+        <mat-icon *ngIf="service2Completed">check</mat-icon>
+        <h4>Procesando texto encontrado</h4>
+      </div>
+      <div class="estado-item">
+        <mat-spinner *ngIf="!service3Completed" diameter="20"></mat-spinner>
+        <mat-icon *ngIf="service3Completed">check</mat-icon>
+        <h4>Creando temas</h4>
+      </div>
+      <div class="estado-item">
+        <mat-spinner *ngIf="!service4Completed" diameter="20"></mat-spinner>
+        <mat-icon *ngIf="service4Completed">check</mat-icon>
+        <h4>Generando Grafo</h4>
+      </div>
+      <div class="estado-item">
+        <mat-spinner *ngIf="!service5Completed" diameter="20"></mat-spinner>
+        <mat-icon *ngIf="service5Completed">check</mat-icon>
+        <h4>Generando PDF</h4>
+      </div>
+      <div>
+        <div *ngIf="url" class="grafica-enlace">
+          <a mat-button [href]="url" target="_blank">Ver Grafo generado</a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="documentoDescargado" class="mensaje-descarga">
+      <mat-icon color="primary">check_circle</mat-icon>
+      <span>¡El documento ha sido descargado exitosamente!</span>
+    </div>    
+
+    <div *ngIf="showAdvancedOptions" class="advanced-options">
+      <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>1. Adquisición de Artículos de Biblioteca Virtual</mat-panel-title>
+            <p mat-icon-button matTooltip="Select libraries for document collection" class="help-icon"><mat-icon>help</mat-icon></p>
+          </mat-expansion-panel-header>
+          <h3>Bibliotecas Virtuales</h3>
+          <p><mat-checkbox [(ngModel)]="checkboxes.bibliotecasVirtuales.doaj" [disabled]="searchDisabled">Doaj</mat-checkbox></p>
+          <p><mat-checkbox [(ngModel)]="checkboxes.bibliotecasVirtuales.plos" [disabled]="searchDisabled">Plos</mat-checkbox></p>
+
+          <h3>Repositorio Local</h3>
+
+          <p>
+            <mat-checkbox [(ngModel)]="checkboxes.bibliotecasVirtuales.local" [disabled]="searchDisabled">
+              Repositorio local (artículos comprados)
+            </mat-checkbox>
+          </p>
+
+          <!-- Listar Documentos -->
+          <mat-accordion class="rl">
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Listar Documentos del repositorio local</mat-panel-title>
+              </mat-expansion-panel-header>
+              
+              <div>
+                <button mat-raised-button color="primary" (click)="cargarDocumentos()">Actualizar Lista</button>
+              </div>
+              
+              <!-- Tabla para mostrar los documentos -->
+              <table mat-table [dataSource]="documentos" class="mat-elevation-z8" *ngIf="documentos.length > 0">
+                <ng-container matColumnDef="index">
+                  <th mat-header-cell *matHeaderCellDef>#</th>
+                  <td mat-cell *matCellDef="let doc; let i = index">{{ i + 1 }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="titulo">
+                  <th mat-header-cell *matHeaderCellDef>Nombre del Documento</th>
+                  <td mat-cell *matCellDef="let doc">{{ doc }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="['index', 'titulo']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['index', 'titulo'];"></tr>
+              </table>
+
+              <ul>
+                <li *ngFor="let file of uploadedFiles">{{ file.name }}</li>
+              </ul>
+            </mat-expansion-panel>
+          
+
+            <!-- Mensaje cuando no hay documentos -->
+            <p *ngIf="documentos.length === 0">Presiona el botón "Listar" para cargar los documentos.</p>
+
+            <!-- Subir Documentos -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Subir documentos al repositorio local (Archivos permitidos '.bib', '.pdf')</mat-panel-title>
+              </mat-expansion-panel-header>
+              
+              <div>
+                <input type="file" (change)="onFileSelecteds($event)" multiple />
+                <button mat-raised-button color="primary" (click)="uploadFiles()">Subir</button>
+              </div>
+              
+              <p *ngIf="uploadMessage">{{ uploadMessage }}</p>
+
+              <ul>
+                <li *ngFor="let file of uploadedFiles">{{ file.name }}</li>
+              </ul>
+            </mat-expansion-panel>
+
+
+            <!-- Eliminar Documentos -->
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>Eliminar Documentos Repositorio Local</mat-panel-title>
+              </mat-expansion-panel-header>
+              
+              <button mat-raised-button color="warn" (click)="deleteAllFiles()" [disabled]="searchDisabled">
+                Borrar todos los documentos
+              </button>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+          <h3>Seleccione el texto a utilizar</h3>
+          <mat-radio-group [(ngModel)]="contenidoBusqueda" [disabled]="searchDisabled">
+            <mat-radio-button value="texto">Texto</mat-radio-button>
+            <mat-radio-button value="abstract">Abstract</mat-radio-button>
+          </mat-radio-group>
+          <h3>Numero de Documentos</h3>
+          <mat-form-field>
+            <input matInput type="number" [(ngModel)]="cantidadDocumentos" [disabled]="searchDisabled">
+          </mat-form-field>
+
+
+
+        </mat-expansion-panel>
+        
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>2. Representaciones del conocimiento (resúmenes, visualizaciones, palabras clave)</mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>Número máximo de temas a generar. (#T)</p>
+          <mat-form-field>
+            <input matInput type="number" [(ngModel)]="numTemas" [disabled]="searchDisabled">
+          </mat-form-field>
+          <p>Conjunto de términos comunes con la mayor probabilidad en el tema utilizados para etiquetar ese tema. (k)</p>
+          <mat-form-field>
+            <input matInput type="number" [(ngModel)]="k" [disabled]="searchDisabled">
+          </mat-form-field>
+          <p>Número máximo de palabras para combinar los términos comunes del tema t en un nuevo nombre de tema. (Wt).</p>
+          <mat-form-field>
+            <input matInput type="number" [(ngModel)]="wt" [disabled]="searchDisabled">
+          </mat-form-field>
+          <p>Número máximo de documentos más relevantes para generar el resumen del tema. (N).</p>
+          <mat-form-field>
+            <input matInput type="number" [(ngModel)]="numDocumentos" [disabled]="searchDisabled">
+          </mat-form-field>
+          <p>Número máximo de palabras a generar para el tema.. (Wb).</p>
+          <mat-form-field>
+            <input matInput type="number" [(ngModel)]="maxPalabrasPorTema" [disabled]="searchDisabled">
+          </mat-form-field>
+          <p>Número de palabras clave para la representación del conocimiento.. (J).</p>
+          <mat-form-field>
+            <input matInput type="number" [(ngModel)]="numKywords" [disabled]="searchDisabled">
+          </mat-form-field>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div class="btnew" *ngIf="btnew">
+      <button mat-raised-button (click)="newSearch()" >Nueva búsqueda</button>
+    </div>
+  </div>
+</div>
+
