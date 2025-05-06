@@ -16,23 +16,25 @@ export class AuthService {
   router = inject(Router);
 
   signInWithGoogle() {
-    return this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider())
+    return this.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+      .then(() => {
+        return this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+      })
       .then(result => {
         if (result.additionalUserInfo?.isNewUser) {
           const user: User = {
-            uid: result.user?.uid,
-            email: result.user?.email,
-            name: result.user?.displayName
+            uid: result.user?.uid!,
+            email: result.user?.email!,
+            name: result.user?.displayName!
           };
           return this.firestore.collection('users').doc(user.uid).set(user)
-            .then(() => {
-              return result;
-            });
+            .then(() => result);
         } else {
           return result;
         }
       });
   }
+  
 
   signOut() {
     this.auth.signOut().then(() => {

@@ -7,7 +7,7 @@ import {
   USE_DEVICE_LANGUAGE,
   USE_EMULATOR,
   ɵauthFactory
-} from "./chunk-7GNZ6IRE.js";
+} from "./chunk-GOJKRV25.js";
 import "./chunk-D266LM4S.js";
 import {
   FIREBASE_APP_NAME,
@@ -19,9 +19,6 @@ import "./chunk-DZ3NGRG2.js";
 import {
   firebase
 } from "./chunk-GESHYU5K.js";
-import {
-  isPlatformServer
-} from "./chunk-C7266SUI.js";
 import "./chunk-OONDMBWN.js";
 import "./chunk-6TMFZGDC.js";
 import {
@@ -44,6 +41,9 @@ import {
   isSafari,
   registerVersion
 } from "./chunk-ASNGFGE3.js";
+import {
+  isPlatformServer
+} from "./chunk-C7266SUI.js";
 import {
   Inject,
   Injectable,

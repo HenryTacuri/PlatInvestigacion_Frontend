@@ -30,10 +30,10 @@ export class AppComponent {
     this.router.navigate(['/auth']);
   }
 
-  @HostListener('window:beforeunload', ['$event'])
+  /*@HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any): void {
     this.logout();
-  }
+  }*/
 
   currentYear: number = new Date().getFullYear();
     

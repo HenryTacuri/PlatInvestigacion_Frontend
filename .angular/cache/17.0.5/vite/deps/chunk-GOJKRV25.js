@@ -10,9 +10,6 @@ import {
   firebase
 } from "./chunk-GESHYU5K.js";
 import {
-  isPlatformServer
-} from "./chunk-C7266SUI.js";
-import {
   FirebaseApp
 } from "./chunk-6TMFZGDC.js";
 import {
@@ -40,6 +37,9 @@ import {
   registerVersion,
   uuidv4
 } from "./chunk-ASNGFGE3.js";
+import {
+  isPlatformServer
+} from "./chunk-C7266SUI.js";
 import {
   Inject,
   Injectable,
@@ -1249,4 +1249,4 @@ export {
    * limitations under the License.
    *)
 */
-//# sourceMappingURL=chunk-7GNZ6IRE.js.map
+//# sourceMappingURL=chunk-GOJKRV25.js.map
