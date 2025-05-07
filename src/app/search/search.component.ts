@@ -26,6 +26,7 @@ import { ServiceService } from '../services/service.service';
 
 import JSZip from 'jszip';
 import Swal from 'sweetalert2';
+import { OpenaiService } from '../services/openai.service';
 
 type BibliotecaVirtual = 'doaj' | 'arVix' | 'plox' | 'local';
 
@@ -114,7 +115,7 @@ export class SearchComponent implements OnInit {
   selectedFiles: File[] = [];
   uploadedFiles: { name: string; content: string }[] = [];
   uploadMessage: string = '';
-  constructor(private service : ServiceService, private snackBar: MatSnackBar) { }
+  constructor(private service : ServiceService, private snackBar: MatSnackBar, private openai: OpenaiService) { }
 
   documentos: string[] = []; // Lista para almacenar los títulos de los documentos
 
@@ -310,50 +311,76 @@ export class SearchComponent implements OnInit {
   }
 
   async buscarArticulos() {
-  
     const apiKey = this.currentUser.apiKeyChatGPT;
-    console.log(apiKey)
-
+  
+    // Validar API Key
     try {
-      const response = await this.service.apikeyProve(apiKey).toPromise();
-      console.log('Respuesta del servidor:', response);
+      await this.service.apikeyProve(apiKey).toPromise();
     } catch (error) {
-      console.error('Error en la solicitud:', error);
-      alert('Please enter a valid API key');
-      return; // Termina la ejecución si hay un error
+      alert('API Key inválida');
+      return;
     }
-
-
+  
+    // Validar consulta vacía
     if (!this.searchQuery.trim()) {
       alert('Por favor, llene el tema de búsqueda.');
       return;
     }
-
-    this.searchDisabled = true; // Deshabilitar el input y los botones al iniciar la búsqueda
+  
+    // Deshabilitar UI
+    this.searchDisabled = true;
     this.showAdvancedOptions = false;
-
-    this.selectedBibliotecasVirtuales = Object.keys(this.checkboxes.bibliotecasVirtuales)
-      .filter((key) => this.checkboxes.bibliotecasVirtuales[key as BibliotecaVirtual]) as BibliotecaVirtual[];
-
-    console.log(this.searchQuery);
-    console.log(this.selectedBibliotecasVirtuales);
-    console.log(this.cantidadDocumentos)
     this.estado = true;
-    this.service.buscarArticulos(this.searchQuery, this.selectedBibliotecasVirtuales, this.cantidadDocumentos).subscribe(
-      response => {
-        console.log('Respuesta del servidor:', response);
-        //this.loading = true;
+    console.log("Antes de la correcion: ", this.searchQuery);
+    
+    try {
+      // ✅ Corregir la consulta con GPT en el frontend
+      const response = await this.openai.corregirConsultaConGPT(this.searchQuery, apiKey).toPromise();
+      const searchQueryCorregida = response.choices[0].message.content.trim();
+  
+      // ✅ Actualizar la consulta en la interfaz (opcional)
+      this.searchQuery = searchQueryCorregida;
 
-        // Lógica de búsqueda de artículos
-        this.service1Completed = true;
-        this.preprocesarTexto();
-      },
-      error => {
-        console.error('Error en la solicitud:', error);
-        alert('Error');
-        this.estado = false;
-      }
-    );
+      console.log("Despues de la correcion: ", this.searchQuery);
+      
+  
+      // ✅ Enviar consulta corregida al backend
+      this.selectedBibliotecasVirtuales = Object.keys(this.checkboxes.bibliotecasVirtuales)
+        .filter((key) => this.checkboxes.bibliotecasVirtuales[key as BibliotecaVirtual]) as BibliotecaVirtual[];
+  
+      this.service.buscarArticulos(this.searchQuery, this.selectedBibliotecasVirtuales, this.cantidadDocumentos)
+        .subscribe(
+          response => {
+            console.log('Respuesta del servidor:', response);
+            this.service1Completed = true;
+            this.preprocesarTexto();
+          },
+          error => {
+            console.error('Error en la solicitud:', error);
+            alert('Error');
+            this.estado = false;
+          }
+        );
+  
+    } catch (error) {
+      console.error('Error al corregir con GPT:', error);
+      alert('No se pudo corregir la consulta, enviando la original...');
+      
+      // ✅ Fallback: enviar consulta original si GPT falla
+      this.service.buscarArticulos(this.searchQuery, this.selectedBibliotecasVirtuales, this.cantidadDocumentos)
+        .subscribe(
+          response => {
+            console.log('Respuesta del servidor:', response);
+            this.service1Completed = true;
+            this.preprocesarTexto();
+          },
+          error => {
+            console.error('Error en la solicitud:', error);
+            alert('Error');
+            this.estado = false;
+          }
+        );
+    }
   }
 
   preprocesarTexto() {
