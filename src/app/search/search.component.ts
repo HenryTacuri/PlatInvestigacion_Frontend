@@ -408,8 +408,19 @@ export class SearchComponent implements OnInit {
   createFileFromHtml(htmlContent: string){
     const blob = new Blob([htmlContent], { type: 'text/html' });
     const file = new File([blob], 'archivo.html', { type: 'text/html' });
+    this.service4Completed = true;
+
     this.generarPdf();
     //this.uploadFile(file);
+  }
+
+  async mostrarGrafo() {
+    this.service.obtenerGrafo().subscribe(grafo => {
+      const nuevaVentana = window.open();
+      nuevaVentana.document.write(grafo);
+      nuevaVentana.document.close();
+    });
+
   }
 
   async uploadFile(file: File): Promise<void> {
@@ -476,10 +487,28 @@ export class SearchComponent implements OnInit {
                     });
             };
 
+            const obtenerGrafoDesdeDjango = () => {
+              return this.service.obtenerGrafo().toPromise()
+                  .then((html: string) => {
+                      // Crear un Blob a partir del texto HTML
+                      const htmlBlob = new Blob([html], { type: 'text/html' });
+          
+                      // Agregar el archivo HTML al ZIP
+                      imagenesFolder?.file('grafo.html', htmlBlob);
+                  })
+                  .catch((error) => {
+                      console.error('Error al descargar el archivo grafo.html:', error);
+                      alert('Error al incluir el archivo grafo.html en el ZIP');
+                      this.estado = false;
+                  });
+            };
+          
+
             // Combina la imagen original desde assets (method.png) y la imagen desde Django (lda_topic_graph_simplified.png)
             Promise.all([
                 agregarImagenDesdeAssets('method.png', 'assets/method.png'),
-                obtenerImagenDesdeDjango()
+                obtenerImagenDesdeDjango(),
+                obtenerGrafoDesdeDjango()
             ]).then(() => {
                 zip.generateAsync({ type: 'blob' }).then((zipBlob) => {
                     const url = window.URL.createObjectURL(zipBlob);

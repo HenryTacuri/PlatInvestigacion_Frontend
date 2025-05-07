@@ -7,8 +7,10 @@ import {
   USE_DEVICE_LANGUAGE,
   USE_EMULATOR,
   ɵauthFactory
-} from "./chunk-GOJKRV25.js";
-import "./chunk-D266LM4S.js";
+} from "./chunk-UX6QBWXV.js";
+import "./chunk-BSO4FDWX.js";
+import "./chunk-OONDMBWN.js";
+import "./chunk-6TMFZGDC.js";
 import {
   FIREBASE_APP_NAME,
   FIREBASE_OPTIONS,
@@ -19,8 +21,6 @@ import "./chunk-DZ3NGRG2.js";
 import {
   firebase
 } from "./chunk-GESHYU5K.js";
-import "./chunk-OONDMBWN.js";
-import "./chunk-6TMFZGDC.js";
 import {
   VERSION,
   keepUnstableUntilFirst,

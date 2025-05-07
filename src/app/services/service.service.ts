@@ -95,5 +95,10 @@ export class ServiceService {
     const url = `${this.baseUrl}api/imagen/`;
     return this.http.get(url, { responseType: 'blob' }); // Recibir la imagen como Blob
   }
-  
+
+  obtenerGrafo() {
+    const url = `${this.baseUrl}api/grafo/`;
+    return this.http.get(url, { responseType: 'text' });
+  }
+
 }

@@ -18,6 +18,7 @@
         [disabled]="searchDisabled">Configuraciones</button>
     </div>
 
+
     <div *ngIf="!isLoggedIn" class="warning">
       <p>Es necesario iniciar sesión para utilizar la herramienta.</p>
     </div>
@@ -49,8 +50,8 @@
         <h4>Generando PDF</h4>
       </div>
       <div>
-        <div *ngIf="url" class="grafica-enlace">
-          <a mat-button [href]="url" target="_blank">Ver Grafo generado</a>
+        <div *ngIf="service4Completed" class="grafica-enlace">
+          <a mat-button (click)="mostrarGrafo()" target="_blank">Ver Grafo generado</a>
         </div>
       </div>
     </div>
